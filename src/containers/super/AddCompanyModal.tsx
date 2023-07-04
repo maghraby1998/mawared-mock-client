@@ -6,6 +6,7 @@ import { addCompany } from "../../axios/mutations";
 interface Props {
   isOpen: boolean;
   handleClose: () => void;
+  refetch: () => void;
 }
 
 export interface BusinessPartner {
@@ -13,7 +14,7 @@ export interface BusinessPartner {
   email: string;
 }
 
-const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose }) => {
+const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
   const [companyName, setCompanyName] = useState<string>("");
   const [businessPartners, setBusinessPartners] = useState<BusinessPartner[]>([
     {
@@ -64,6 +65,10 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose }) => {
       businessPartners: BusinessPartner[];
     }) => {
       return addCompany(companyName, businessPartners);
+    },
+    onSuccess: (data) => {
+      refetch();
+      handleCloseModal();
     },
   });
 

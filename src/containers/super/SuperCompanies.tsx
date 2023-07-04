@@ -11,8 +11,10 @@ const SuperCompanies = () => {
     setIsCompanyModalOpen(false);
   };
 
-  const { data, isLoading } = useQuery(["getCompanies", filter], () =>
-    getCompanies(filter)
+  const { data, isLoading, refetch } = useQuery(
+    ["getCompanies", filter],
+    () => getCompanies(filter),
+    { refetchOnMount: true }
   );
 
   const handleAddNewCompanyBtn = () => {
@@ -60,6 +62,7 @@ const SuperCompanies = () => {
       )}
 
       <AddCompanyModal
+        refetch={refetch}
         isOpen={isCompanyModalOpen}
         handleClose={handleCloseCompanyModal}
       />

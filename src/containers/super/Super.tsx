@@ -5,7 +5,7 @@ import SuperCompanies from "./SuperCompanies";
 const Super = () => {
   const [value, setValue] = useState(0);
 
-  const handleChange = (e: any, value: any) => {
+  const handleChange = (_: any, value: any) => {
     setValue(value);
   };
 
