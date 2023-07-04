@@ -130,7 +130,7 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose }) => {
                 <input
                   type="text"
                   placeholder="Name..."
-                  className="border-b border-b-slate-500 py-2"
+                  className="border-b border-b-slate-500 py-2 flex-1"
                   value={bp.name}
                   onChange={(e) =>
                     handleBusinessPartnerInputChange(
@@ -143,7 +143,7 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose }) => {
                 <input
                   type="text"
                   placeholder="Email..."
-                  className="border-b border-b-slate-500 py-2"
+                  className="border-b border-b-slate-500 py-2 flex-1"
                   value={bp.email}
                   onChange={(e) =>
                     handleBusinessPartnerInputChange(
@@ -154,10 +154,15 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose }) => {
                   }
                 />
                 {index !== 0 ? (
-                  <button onClick={() => handleDeleteBusinessPartner(index)}>
+                  <button
+                    className="w-[100px]"
+                    onClick={() => handleDeleteBusinessPartner(index)}
+                  >
                     delete
                   </button>
-                ) : null}
+                ) : (
+                  <div className="w-[100px]"></div>
+                )}
               </div>
             );
           })}

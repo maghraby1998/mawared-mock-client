@@ -15,8 +15,11 @@ const Layout = () => {
   return (
     <>
       <div className="px-[50px] bg-slate-700 h-[50px] w-full flex gap-5 items-center justify-end">
-        <p className="text-white">{authName}</p>
-        <button className="text-red-500 font-bold" onClick={handleLogOut}>
+        <p className="text-white capitalize">{authName}</p>
+        <button
+          className="text-red-500 font-bold capitalize"
+          onClick={handleLogOut}
+        >
           logout
         </button>
       </div>

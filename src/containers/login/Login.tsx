@@ -1,9 +1,11 @@
 import { useMutation } from "react-query";
 import { loginMutation } from "../../axios/mutations";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAuth, setToken } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
+import useValidation from "../../hooks/useValidation";
+import "./login.css";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -13,6 +15,26 @@ export default function Login() {
     email: "",
     password: "",
   });
+
+  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+
+  const { isValid: isEmailValid, validationMessage: emailValidationMessage } =
+    useValidation({
+      validateAt: "isString",
+      value: form.email,
+      isFormSubmitted,
+    });
+
+  const {
+    isValid: isPasswordValid,
+    validationMessage: passwordValidationMessage,
+  } = useValidation({
+    validateAt: "isString",
+    value: form.password,
+    isFormSubmitted,
+  });
+
+  console.log(form);
 
   const { mutate: signIn, isLoading: loginLoading } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => {
@@ -24,6 +46,8 @@ export default function Login() {
       dispatch(setToken(access_token));
       if (user?.userType?.name?.toLowerCase() === "super") {
         navigate("/super");
+      } else {
+        navigate("/");
       }
     },
     onError: (error) => {
@@ -41,10 +65,19 @@ export default function Login() {
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
-    if (form.email && form.password) {
-      signIn({ email: form.email, password: form.password });
+    setIsFormSubmitted(true);
+    if (isEmailValid && isPasswordValid) {
+      if (form.email && form.password) {
+        signIn({ email: form.email, password: form.password });
+      }
     }
   };
+
+  useEffect(() => {
+    return () => {
+      setIsFormSubmitted(false);
+    };
+  }, []);
 
   return (
     <div className="flex align-items-center justify-center">
@@ -56,19 +89,33 @@ export default function Login() {
         <input
           type="text"
           placeholder="email"
-          className="text-xl border p-1 rounded"
+          className={`text-xl border p-1 rounded ${
+            !isEmailValid && isFormSubmitted ? "invalid-input-style" : ""
+          }`}
           value={form.email}
           onChange={handleChange}
           name="email"
         />
+        {isFormSubmitted && (
+          <p className="error-validation-message">{emailValidationMessage}</p>
+        )}
+
         <input
-          className="text-xl border p-1 rounded"
+          className={`text-xl border p-1 rounded ${
+            !isPasswordValid && isFormSubmitted ? "invalid-input-style" : ""
+          }`}
           type="password"
           placeholder="password"
           value={form.password}
           onChange={handleChange}
           name="password"
         />
+        {isFormSubmitted && (
+          <p className="error-validation-message">
+            {passwordValidationMessage}
+          </p>
+        )}
+
         <button className="text-xl bg-slate-300 rounded p-1 cursor-pointer hover:bg-slate-400">
           {loginLoading ? "loading" : "login"}
         </button>

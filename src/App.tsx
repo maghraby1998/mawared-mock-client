@@ -17,13 +17,13 @@ const queryClient = new QueryClient();
 function App() {
   const auth = useSelector((state: RootState) => state.auth.auth);
 
-  console.log(auth);
   const token = useSelector((state: RootState) => state.auth.token);
 
   const router = createBrowserRouter(
     createRoutesFromElements(
       !token ? (
         <Route path="/">
+          <Route index element={<Navigate to={"/login"} />} />
           <Route path="login" element={<Login />} />
           <Route path="*" element={<Navigate to="/login" />} />
         </Route>
@@ -40,7 +40,17 @@ function App() {
           <Route path="super" element={<Super />} />
         </Route>
       ) : (
-        <Route></Route>
+        <Route
+          path="/"
+          element={
+            <>
+              <Layout />
+              <Navigate to={"/"} />
+            </>
+          }
+        >
+          <Route index element={<div>welcome user</div>} />
+        </Route>
       )
     )
   );
