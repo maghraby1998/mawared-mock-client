@@ -1,7 +1,9 @@
 import { Modal } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useMutation } from "react-query";
 import { addCompany } from "../../axios/mutations";
+import TextInput from "../../inputs/TextInput";
+import ValidateAt from "../../enums/ValidateAt";
 
 interface Props {
   isOpen: boolean;
@@ -22,10 +24,24 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
       email: "",
     },
   ]);
+  const [isFormSubmitted, setIsFormSubmitted] = useState(false);
+  const [clientErrors, setClientErrors] = useState<string[]>([]);
+
+  const sharedProps = { isFormSubmitted, setClientErrors };
+
+  useEffect(() => {
+    return () => {
+      setIsFormSubmitted(false);
+      setClientErrors([]);
+    };
+  }, [isOpen]);
 
   const handleSubmit = (event: any) => {
+    setIsFormSubmitted(true);
     event.preventDefault();
-    mutate({ companyName: companyName, businessPartners });
+    if (!clientErrors.length) {
+      mutate({ companyName: companyName, businessPartners });
+    }
   };
 
   const addBusinessPartner = () => {
@@ -101,13 +117,16 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
           className="bg-white px-5 py-5 rounded-bl rounded-br"
         >
           <div className="flex flex-col mb-3">
-            <label
-              className="capitalize text-slate-500 font-semibold"
-              htmlFor="name"
-            >
-              name
-            </label>
-            <input
+            <TextInput
+              label="name"
+              name="name"
+              placeholder="Company name..."
+              value={companyName}
+              onChange={(e) => setCompanyName(e.target.value)}
+              validateAt={ValidateAt.isString}
+              {...sharedProps}
+            />
+            {/* <input
               type="text"
               id="name"
               name="name"
@@ -115,7 +134,7 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
               className="border-b border-b-slate-500 py-2"
               value={companyName}
               onChange={(e) => setCompanyName(e.target.value)}
-            />
+            /> */}
           </div>
           <div className="flex items-center gap-3">
             <h3 className="capitalize text-slate-500 font-semibold">

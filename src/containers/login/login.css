@@ -1,5 +1,5 @@
 .invalid-input-style {
-  @apply border border-red-500;
+  @apply border-b border-red-500;
 }
 
 .error-validation-message {

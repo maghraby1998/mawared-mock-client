@@ -1,17 +1,29 @@
+import ValidateAt from "../enums/ValidateAt";
 import { validationSchema } from "../helpers/validations";
 import { useState, useEffect } from "react";
 
 interface Args {
+  name: string;
   value: any;
-  validateAt: string;
+  validateAt?: ValidateAt;
   isFormSubmitted: boolean;
+  setClientErrors: (callBack: (arg: any) => any) => any;
 }
 
-const useValidation = ({ value, validateAt, isFormSubmitted }: Args) => {
+const useValidation = ({
+  name,
+  value,
+  validateAt,
+  isFormSubmitted,
+  setClientErrors,
+}: Args) => {
   const [isValid, setIsValid] = useState<boolean>(false);
   const [validationMessage, setValidationMessage] = useState<string>("");
 
   const runValidation = async (): Promise<void> => {
+    if (!validateAt) {
+      return;
+    }
     try {
       const valid = await validationSchema.validateAt(validateAt, {
         [validateAt]: value,
@@ -19,18 +31,33 @@ const useValidation = ({ value, validateAt, isFormSubmitted }: Args) => {
       if (valid) {
         setIsValid(true);
         setValidationMessage("");
+        setClientErrors((prev: any) =>
+          prev.filter((inputName: any) => inputName !== name)
+        );
       }
     } catch (error: any) {
       setIsValid(false);
       setValidationMessage(error.errors[0]);
+      setClientErrors((prev: any[]) => {
+        if (!prev.includes(name)) {
+          return [...prev, name];
+        } else {
+          return prev;
+        }
+      });
     }
   };
 
   useEffect(() => {
-    runValidation();
+    if (validateAt) {
+      runValidation();
+    }
   }, [value, isFormSubmitted]);
 
-  return { isValid, validationMessage };
+  return {
+    isValid: validateAt ? isValid : true,
+    validationMessage: validateAt ? validationMessage : "",
+  };
 };
 
 export default useValidation;

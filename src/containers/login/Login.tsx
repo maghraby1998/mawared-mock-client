@@ -4,37 +4,23 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAuth, setToken } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import useValidation from "../../hooks/useValidation";
+import TextInput from "../../inputs/TextInput";
 import "./login.css";
+import ValidateAt from "../../enums/ValidateAt";
 
 export default function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  const [clientErrors, setClientErrors] = useState([]);
+  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+
+  const sharedProps = { isFormSubmitted, setClientErrors };
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
-
-  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
-
-  const { isValid: isEmailValid, validationMessage: emailValidationMessage } =
-    useValidation({
-      validateAt: "isString",
-      value: form.email,
-      isFormSubmitted,
-    });
-
-  const {
-    isValid: isPasswordValid,
-    validationMessage: passwordValidationMessage,
-  } = useValidation({
-    validateAt: "isString",
-    value: form.password,
-    isFormSubmitted,
-  });
-
-  console.log(form);
 
   const { mutate: signIn, isLoading: loginLoading } = useMutation({
     mutationFn: ({ email, password }: { email: string; password: string }) => {
@@ -66,16 +52,15 @@ export default function Login() {
   const handleSubmit = (event: any) => {
     event.preventDefault();
     setIsFormSubmitted(true);
-    if (isEmailValid && isPasswordValid) {
-      if (form.email && form.password) {
-        signIn({ email: form.email, password: form.password });
-      }
+    if (!clientErrors.length) {
+      signIn({ email: form.email, password: form.password });
     }
   };
 
   useEffect(() => {
     return () => {
       setIsFormSubmitted(false);
+      setClientErrors([]);
     };
   }, []);
 
@@ -86,35 +71,26 @@ export default function Login() {
         className="flex flex-col gap-5 w-[400px] m-20"
       >
         <h1 className="text-3xl capitalize font-bold">login page</h1>
-        <input
-          type="text"
-          placeholder="email"
-          className={`text-xl border p-1 rounded ${
-            !isEmailValid && isFormSubmitted ? "invalid-input-style" : ""
-          }`}
+        <TextInput
+          label="email"
+          placeholder="Email..."
           value={form.email}
           onChange={handleChange}
           name="email"
+          validateAt={ValidateAt.isString}
+          {...sharedProps}
         />
-        {isFormSubmitted && (
-          <p className="error-validation-message">{emailValidationMessage}</p>
-        )}
 
-        <input
-          className={`text-xl border p-1 rounded ${
-            !isPasswordValid && isFormSubmitted ? "invalid-input-style" : ""
-          }`}
+        <TextInput
+          label="password"
           type="password"
-          placeholder="password"
+          placeholder="Password..."
           value={form.password}
           onChange={handleChange}
           name="password"
+          validateAt={ValidateAt.isString}
+          {...sharedProps}
         />
-        {isFormSubmitted && (
-          <p className="error-validation-message">
-            {passwordValidationMessage}
-          </p>
-        )}
 
         <button className="text-xl bg-slate-300 rounded p-1 cursor-pointer hover:bg-slate-400">
           {loginLoading ? "loading" : "login"}
