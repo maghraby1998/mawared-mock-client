@@ -1,24 +1,38 @@
-import { useQuery } from "react-query";
+import { useQuery, useMutation } from "react-query";
 import { getCompanies } from "../../axios/queries";
+import { deleteCompany } from "../../axios/mutations";
 import { useState } from "react";
 import AddCompanyModal from "./AddCompanyModal";
+import { Link } from "react-router-dom";
 
-const SuperCompanies = () => {
+const SuperCompaniesList = () => {
   const [filter, setFilter] = useState("");
   const [isCompanyModalOpen, setIsCompanyModalOpen] = useState(false);
+
+  const { data, isLoading, refetch } = useQuery(["getCompanies", filter], () =>
+    getCompanies(filter)
+  );
+
+  const { mutate: deleteCompanyFunc, isLoading: deleteCompanyLoading } =
+    useMutation({
+      mutationFn: (id: number) => {
+        return deleteCompany(id);
+      },
+      onSuccess: () => {
+        refetch();
+      },
+    });
 
   const handleCloseCompanyModal = () => {
     setIsCompanyModalOpen(false);
   };
 
-  const { data, isLoading, refetch } = useQuery(
-    ["getCompanies", filter],
-    () => getCompanies(filter),
-    { refetchOnMount: true }
-  );
-
   const handleAddNewCompanyBtn = () => {
     setIsCompanyModalOpen(true);
+  };
+
+  const handleDeleteCompany = (id: number): void => {
+    deleteCompanyFunc(id);
   };
 
   return (
@@ -48,15 +62,24 @@ const SuperCompanies = () => {
       {isLoading ? (
         <p>Loading...</p>
       ) : data?.data?.length ? (
-        data?.data.map((company: { name: string; users: { id: number }[] }) => {
-          return (
-            <div className="flex justify-between p-2 capitalize rounded border">
-              <p className="flex-1">{company?.name}</p>
-              <p className="flex-1">{company?.users?.length}</p>
-              <button className="flex-1 text-left">edit</button>
-            </div>
-          );
-        })
+        data?.data.map(
+          (company: { id: number; name: string; users: { id: number }[] }) => {
+            return (
+              <div className="flex justify-between p-2 capitalize rounded border">
+                <Link className="flex-1" to={`/company/${company.id}`}>
+                  {company?.name}
+                </Link>
+                <p className="flex-1">{company?.users?.length}</p>
+                <div className="flex-1 text-left flex gap-3">
+                  <button>edit</button>
+                  <button onClick={() => handleDeleteCompany(company.id)}>
+                    delete
+                  </button>
+                </div>
+              </div>
+            );
+          }
+        )
       ) : (
         <p className="text-red-500 capitalize">no result found</p>
       )}
@@ -70,4 +93,4 @@ const SuperCompanies = () => {
   );
 };
 
-export default SuperCompanies;
+export default SuperCompaniesList;

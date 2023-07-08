@@ -1,6 +1,6 @@
 import { Box, Tab, Tabs } from "@mui/material";
 import { useState } from "react";
-import SuperCompanies from "./SuperCompanies";
+import SuperCompaniesList from "./SuperCompaniesList";
 
 const Super = () => {
   const [value, setValue] = useState(0);
@@ -18,7 +18,7 @@ const Super = () => {
         </Tabs>
       </Box>
       {value === 0 ? (
-        <SuperCompanies />
+        <SuperCompaniesList />
       ) : value === 1 ? (
         <div>tab two</div>
       ) : (

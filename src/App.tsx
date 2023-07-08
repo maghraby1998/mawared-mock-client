@@ -12,6 +12,7 @@ import Super from "./containers/super/Super";
 import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import Layout from "./containers/layout/Layout";
+import Company from "./containers/super/Company";
 const queryClient = new QueryClient();
 
 function App() {
@@ -38,6 +39,7 @@ function App() {
           }
         >
           <Route path="super" element={<Super />} />
+          <Route path="company/:id" element={<Company />} />
         </Route>
       ) : (
         <Route

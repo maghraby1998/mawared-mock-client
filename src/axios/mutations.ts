@@ -17,3 +17,7 @@ export const addCompany = (
     businessPartners,
   });
 };
+
+export const deleteCompany = (id: number) => {
+  return axiosClient.post(`company/${id}/delete`);
+};

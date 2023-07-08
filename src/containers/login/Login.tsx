@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import TextInput from "../../inputs/TextInput";
 import "./login.css";
 import ValidateAt from "../../enums/ValidateAt";
+import { LinearProgress } from "@mui/material";
 
 export default function Login() {
   const dispatch = useDispatch();
@@ -65,37 +66,60 @@ export default function Login() {
   }, []);
 
   return (
-    <div className="flex align-items-center justify-center">
-      <form
-        onSubmit={handleSubmit}
-        className="flex flex-col gap-5 w-[400px] m-20"
-      >
-        <h1 className="text-3xl capitalize font-bold">login page</h1>
-        <TextInput
-          label="email"
-          placeholder="Email..."
-          value={form.email}
-          onChange={handleChange}
-          name="email"
-          validateAt={ValidateAt.isString}
-          {...sharedProps}
-        />
+    <div className="flex items-center justify-center h-screen">
+      <div className="flex-1 bg-slate-500 h-full flex items-center justify-center">
+        <img src={"/src/assets/images/login-image.png"} className="h-3/5" />
+      </div>
+      <div className="flex align-items-center justify-center flex-1">
+        <form
+          onSubmit={handleSubmit}
+          className="flex flex-col gap-5 w-[400px] m-20"
+        >
+          <h1 className="text-3xl capitalize font-bold text-slate-700">
+            login
+          </h1>
+          <TextInput
+            label="email"
+            placeholder="Email..."
+            value={form.email}
+            onChange={handleChange}
+            name="email"
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
 
-        <TextInput
-          label="password"
-          type="password"
-          placeholder="Password..."
-          value={form.password}
-          onChange={handleChange}
-          name="password"
-          validateAt={ValidateAt.isString}
-          {...sharedProps}
-        />
+          <TextInput
+            label="password"
+            type="password"
+            placeholder="Password..."
+            value={form.password}
+            onChange={handleChange}
+            name="password"
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
 
-        <button className="text-xl bg-slate-300 rounded p-1 cursor-pointer hover:bg-slate-400">
-          {loginLoading ? "loading" : "login"}
-        </button>
-      </form>
+          <div className="w-full bg-slate-500 rounded overflow-hidden">
+            <button
+              disabled={loginLoading}
+              className="text-xl w-full text-white capitalize p-2 cursor-pointer hover:bg-slate-400"
+            >
+              login
+            </button>
+            {loginLoading ? (
+              <LinearProgress
+                sx={{
+                  color: "",
+                  backgroundColor: "white",
+                  "& .MuiLinearProgress-bar": {
+                    backgroundColor: "dodgerblue",
+                  },
+                }}
+              />
+            ) : null}
+          </div>
+        </form>
+      </div>
     </div>
   );
 }
