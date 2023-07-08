@@ -126,16 +126,8 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
               validateAt={ValidateAt.isString}
               {...sharedProps}
             />
-            {/* <input
-              type="text"
-              id="name"
-              name="name"
-              placeholder="Company name..."
-              className="border-b border-b-slate-500 py-2"
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-            /> */}
           </div>
+
           <div className="flex items-center gap-3">
             <h3 className="capitalize text-slate-500 font-semibold">
               business partners
@@ -148,13 +140,14 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
               +
             </button>
           </div>
+
           {businessPartners.map((bp, index) => {
             return (
               <div key={index} className="flex gap-5">
-                <input
+                <TextInput
+                  name={`bpName-${index}`}
                   type="text"
                   placeholder="Name..."
-                  className="border-b border-b-slate-500 py-2 flex-1"
                   value={bp.name}
                   onChange={(e) =>
                     handleBusinessPartnerInputChange(
@@ -163,11 +156,14 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
                       e.target.value
                     )
                   }
+                  validateAt={ValidateAt.isString}
+                  {...sharedProps}
                 />
-                <input
+
+                <TextInput
+                  name={`bpEmail-${index}`}
                   type="text"
                   placeholder="Email..."
-                  className="border-b border-b-slate-500 py-2 flex-1"
                   value={bp.email}
                   onChange={(e) =>
                     handleBusinessPartnerInputChange(
@@ -176,6 +172,8 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
                       e.target.value
                     )
                   }
+                  validateAt={ValidateAt.isString}
+                  {...sharedProps}
                 />
                 {index !== 0 ? (
                   <button

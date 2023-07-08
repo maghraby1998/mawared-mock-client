@@ -15,10 +15,14 @@ interface Company {
 const Company: React.FC = () => {
   const { id } = useParams();
 
-  const { data, isLoading } = useQuery(["getCompany", id], () => {
-    if (!id) return;
-    return getCompany(+id);
-  });
+  const { data, isLoading } = useQuery(
+    ["getCompany", id],
+    () => {
+      if (!id) return;
+      return getCompany(+id);
+    },
+    { refetchOnMount: true }
+  );
 
   const { name, offices, departments, positions, users, currencies } =
     data?.data ?? ({} as Company);

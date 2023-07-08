@@ -52,6 +52,16 @@ const useValidation = ({
     if (validateAt) {
       runValidation();
     }
+
+    return () => {
+      if (validateAt) {
+        setIsValid(true);
+        setValidationMessage("");
+        setClientErrors((prev: any) =>
+          prev.filter((inputName: any) => inputName !== name)
+        );
+      }
+    };
   }, [value, isFormSubmitted]);
 
   return {
