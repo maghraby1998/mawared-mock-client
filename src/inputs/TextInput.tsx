@@ -13,6 +13,8 @@ interface Props {
   validateAt?: ValidateAt;
   isFormSubmitted?: boolean;
   setClientErrors?: (callback: (arg: any) => any) => any;
+  containerStyle?: string;
+  autoFocus?: boolean;
 }
 
 const randomId = String(Math.random() * 999999999);
@@ -22,6 +24,7 @@ const TextInput: React.FC<Props> = ({
   isFormSubmitted = false,
   setClientErrors = () => {},
   label,
+  containerStyle,
   ...inputProps
 }) => {
   const { isValid, validationMessage } = useValidation({
@@ -33,7 +36,7 @@ const TextInput: React.FC<Props> = ({
   });
 
   return (
-    <div>
+    <div className={containerStyle}>
       <div>
         {label?.length ? (
           <label
@@ -47,12 +50,11 @@ const TextInput: React.FC<Props> = ({
         ) : null}
         <input
           id={randomId}
-          className={`border-b py-2 w-full mb-2 outline-none focus:border-b-2 ${
+          className={`border-b py-2 w-full outline-none focus:border-b-2 ${
             !isValid && isFormSubmitted
               ? "invalid-input-style"
               : "border-b-slate-500"
           }`}
-          autoComplete="new-password"
           {...inputProps}
         />
       </div>

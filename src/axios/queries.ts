@@ -7,3 +7,7 @@ export const getCompanies = async (name: string) => {
 export const getCompany = (id: number) => {
   return axiosClient.get(`company/${id}`);
 };
+
+export const findAllUsers = (name: string) => {
+  return axiosClient.get(`user${name ? `?name=${name}` : ""}`);
+};

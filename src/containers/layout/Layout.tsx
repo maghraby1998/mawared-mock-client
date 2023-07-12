@@ -1,16 +1,36 @@
-import { Outlet } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { setAuth, setToken } from "../../redux/slices/authSlice";
 import { RootState } from "../../redux/store";
+import UserType from "../../enums/UserType";
+
+interface SidebarLink {
+  name: string;
+  link: string;
+}
+
+const sidebarLinks: SidebarLink[] = [
+  {
+    name: "dashboard",
+    link: "/",
+  },
+  {
+    name: "employees",
+    link: "/employees",
+  },
+];
 
 const Layout = () => {
   const dispatch = useDispatch();
   const authName = useSelector((state: RootState) => state.auth.auth?.name);
+  const authType = useSelector((state: RootState) => state.auth.auth?.userType);
 
   const handleLogOut = () => {
     dispatch(setAuth(null));
     dispatch(setToken(null));
   };
+
+  console.log(authType?.name, UserType.SUPER);
 
   return (
     <>
@@ -23,6 +43,24 @@ const Layout = () => {
           logout
         </button>
       </div>
+
+      {authType?.name !== UserType.SUPER ? (
+        <div className="min-h-screen w-[120px] bg-slate-600 absolute">
+          {sidebarLinks.map((sidebarLink, index: number) => {
+            return (
+              <NavLink
+                key={index}
+                className={({ isActive }) =>
+                  isActive ? "nav-link bg-slate-500" : "nav-link"
+                }
+                to={sidebarLink.link}
+              >
+                {sidebarLink.name}
+              </NavLink>
+            );
+          })}
+        </div>
+      ) : null}
 
       {/*this line here is just for displaying other contents beside the layout*/}
       <Outlet />

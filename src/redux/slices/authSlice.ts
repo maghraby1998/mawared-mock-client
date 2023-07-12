@@ -8,12 +8,12 @@ interface User {
   userType?: { name: string };
 }
 
-export interface CounterState {
+export interface InitialState {
   auth: User | null;
   token: string | null;
 }
 
-const initialState: CounterState = {
+const initialState: InitialState = {
   auth: null,
   token: null,
 };
@@ -25,7 +25,7 @@ export const authSlice = createSlice({
     setAuth: (state, action: PayloadAction<unknown>) => {
       state.auth = action.payload as User;
     },
-    setToken: (state, action) => {
+    setToken: (state, action: PayloadAction<string | null>) => {
       state.token = action.payload;
     },
   },

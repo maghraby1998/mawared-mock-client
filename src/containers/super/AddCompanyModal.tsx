@@ -4,6 +4,7 @@ import { useMutation } from "react-query";
 import { addCompany } from "../../axios/mutations";
 import TextInput from "../../inputs/TextInput";
 import ValidateAt from "../../enums/ValidateAt";
+import CustomModal from "../../components/CustomModal";
 
 interface Props {
   isOpen: boolean;
@@ -95,107 +96,91 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
   };
 
   return (
-    <Modal
-      open={isOpen}
+    <CustomModal
+      modalTitle="add company"
+      isOpen={isOpen}
       onClose={handleCloseModal}
-      className="w-[800px] mx-auto my-[30px] rounded overflow-scroll flex flex-col itmes-start justify-start"
-      disableEscapeKeyDown
-      slotProps={{ backdrop: { onClick: () => {} } }}
     >
-      <>
-        <div className="h-[50px] bg-slate-300 w-full capitalize flex justify-between items-center">
-          <p className="px-5">add company</p>
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="flex flex-col mb-3">
+          <TextInput
+            label="name"
+            name="name"
+            placeholder="Company name..."
+            value={companyName}
+            onChange={(e) => setCompanyName(e.target.value)}
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
+        </div>
+
+        <div className="flex items-center gap-3">
+          <h3 className="capitalize text-slate-500 font-semibold">
+            business partners
+          </h3>
           <button
-            className="bg-red-500 text-white text-xl font-bold h-full w-[50px]"
-            onClick={handleCloseModal}
+            className="bg-green-500 text-white h-7 w-7 text-xl flex items-center justify-center rounded-full"
+            onClick={addBusinessPartner}
+            type="button"
           >
-            x
+            +
           </button>
         </div>
-        <form
-          onSubmit={handleSubmit}
-          className="bg-white px-5 py-5 rounded-bl rounded-br"
-        >
-          <div className="flex flex-col mb-3">
-            <TextInput
-              label="name"
-              name="name"
-              placeholder="Company name..."
-              value={companyName}
-              onChange={(e) => setCompanyName(e.target.value)}
-              validateAt={ValidateAt.isString}
-              {...sharedProps}
-            />
-          </div>
 
-          <div className="flex items-center gap-3">
-            <h3 className="capitalize text-slate-500 font-semibold">
-              business partners
-            </h3>
-            <button
-              className="bg-green-500 text-white h-7 w-7 text-xl flex items-center justify-center rounded-full"
-              onClick={addBusinessPartner}
-              type="button"
-            >
-              +
-            </button>
-          </div>
+        {businessPartners.map((bp, index) => {
+          return (
+            <div key={index} className="flex gap-5">
+              <TextInput
+                name={`bpName-${index}`}
+                type="text"
+                placeholder="Name..."
+                value={bp.name}
+                onChange={(e) =>
+                  handleBusinessPartnerInputChange(
+                    index,
+                    "name",
+                    e.target.value
+                  )
+                }
+                validateAt={ValidateAt.isString}
+                {...sharedProps}
+              />
 
-          {businessPartners.map((bp, index) => {
-            return (
-              <div key={index} className="flex gap-5">
-                <TextInput
-                  name={`bpName-${index}`}
-                  type="text"
-                  placeholder="Name..."
-                  value={bp.name}
-                  onChange={(e) =>
-                    handleBusinessPartnerInputChange(
-                      index,
-                      "name",
-                      e.target.value
-                    )
-                  }
-                  validateAt={ValidateAt.isString}
-                  {...sharedProps}
-                />
-
-                <TextInput
-                  name={`bpEmail-${index}`}
-                  type="text"
-                  placeholder="Email..."
-                  value={bp.email}
-                  onChange={(e) =>
-                    handleBusinessPartnerInputChange(
-                      index,
-                      "email",
-                      e.target.value
-                    )
-                  }
-                  validateAt={ValidateAt.isString}
-                  {...sharedProps}
-                />
-                {index !== 0 ? (
-                  <button
-                    className="w-[100px]"
-                    onClick={() => handleDeleteBusinessPartner(index)}
-                  >
-                    delete
-                  </button>
-                ) : (
-                  <div className="w-[100px]"></div>
-                )}
-              </div>
-            );
-          })}
-          <div className="flex justify-end mt-8 border-t border-t-slate-500 pt-2">
-            <button className="bg-green-500 text-white px-5 py-1 rounded capitalize">
-              {isLoading ? "loading..." : "save"}
-            </button>
-          </div>
-        </form>
-      </>
-    </Modal>
+              <TextInput
+                name={`bpEmail-${index}`}
+                type="text"
+                placeholder="Email..."
+                value={bp.email}
+                onChange={(e) =>
+                  handleBusinessPartnerInputChange(
+                    index,
+                    "email",
+                    e.target.value
+                  )
+                }
+                validateAt={ValidateAt.isString}
+                {...sharedProps}
+              />
+              {index !== 0 ? (
+                <button
+                  className="w-[100px]"
+                  onClick={() => handleDeleteBusinessPartner(index)}
+                >
+                  delete
+                </button>
+              ) : (
+                <div className="w-[100px]"></div>
+              )}
+            </div>
+          );
+        })}
+        <div className="flex justify-end mt-8 border-t border-t-slate-500 pt-2">
+          <button className="bg-green-500 text-white px-5 py-1 rounded capitalize">
+            {isLoading ? "loading..." : "save"}
+          </button>
+        </div>
+      </form>
+    </CustomModal>
   );
 };
 

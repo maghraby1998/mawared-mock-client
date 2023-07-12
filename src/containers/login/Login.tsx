@@ -86,6 +86,7 @@ export default function Login() {
             name="email"
             validateAt={ValidateAt.isString}
             {...sharedProps}
+            autoFocus
           />
 
           <TextInput

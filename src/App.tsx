@@ -13,6 +13,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "./redux/store";
 import Layout from "./containers/layout/Layout";
 import Company from "./containers/super/Company";
+import Employees from "./containers/employees";
 const queryClient = new QueryClient();
 
 function App() {
@@ -42,16 +43,10 @@ function App() {
           <Route path="company/:id" element={<Company />} />
         </Route>
       ) : (
-        <Route
-          path="/"
-          element={
-            <>
-              <Layout />
-              <Navigate to={"/"} />
-            </>
-          }
-        >
-          <Route index element={<div>welcome user</div>} />
+        <Route path="/" element={<Layout />}>
+          <Route index element={<div>dashboard</div>} />
+          <Route path="employees" element={<Employees />} />
+          <Route path="*" element={<Navigate to={"/"} />} />
         </Route>
       )
     )

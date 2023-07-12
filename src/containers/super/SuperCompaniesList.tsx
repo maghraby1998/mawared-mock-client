@@ -45,10 +45,7 @@ const SuperCompaniesList = () => {
           onChange={(e) => setFilter(e.target.value)}
           className="border p-2 rounded w-full"
         />
-        <button
-          onClick={handleAddNewCompanyBtn}
-          className="whitespace-nowrap bg-green-700 text-white p-3 capitalize font-semibold rounded hover:bg-green-800"
-        >
+        <button onClick={handleAddNewCompanyBtn} className="add-new-btn-style">
           add new
         </button>
       </div>

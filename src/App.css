@@ -1,0 +1,15 @@
+.page-container {
+  @apply ml-[120px] p-5;
+}
+
+.nav-link {
+  @apply block flex items-center justify-center h-[90px] text-white capitalize hover:bg-slate-500;
+}
+
+.add-new-btn-style {
+  @apply whitespace-nowrap bg-green-700 text-white px-3 py-2 capitalize font-semibold rounded hover:bg-green-800;
+}
+
+.form-container {
+  @apply bg-white px-5 py-5 rounded-bl rounded-br;
+}
