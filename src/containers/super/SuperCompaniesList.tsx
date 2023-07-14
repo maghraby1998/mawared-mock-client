@@ -50,7 +50,7 @@ const SuperCompaniesList = () => {
         </button>
       </div>
 
-      <div className="flex justify-between bg-slate-600 p-2 text-white capitalize font-bold rounded">
+      <div className="list-header-style">
         <p className="flex-1">name</p>
         <p className="flex-1">No. of employees</p>
         <p className="flex-1">actions</p>
@@ -62,7 +62,7 @@ const SuperCompaniesList = () => {
         data?.data.map(
           (company: { id: number; name: string; users: { id: number }[] }) => {
             return (
-              <div className="flex justify-between p-2 capitalize rounded border">
+              <div className="list-row-style">
                 <Link className="flex-1" to={`/company/${company.id}`}>
                   {company?.name}
                 </Link>

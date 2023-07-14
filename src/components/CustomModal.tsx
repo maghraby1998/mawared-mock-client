@@ -20,7 +20,6 @@ const CustomModal: React.FC<Props> = ({
   return (
     <Modal
       open={isOpen}
-      onClose={onClose}
       className={`w-[${modalSize}px] mx-auto my-[30px] rounded overflow-scroll flex flex-col itmes-start justify-start`}
       disableEscapeKeyDown
       slotProps={{ backdrop: { onClick: () => {} } }}

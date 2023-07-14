@@ -18,6 +18,10 @@ const sidebarLinks: SidebarLink[] = [
     name: "employees",
     link: "/employees",
   },
+  {
+    name: "offices",
+    link: "/offices",
+  },
 ];
 
 const Layout = () => {
@@ -29,8 +33,6 @@ const Layout = () => {
     dispatch(setAuth(null));
     dispatch(setToken(null));
   };
-
-  console.log(authType?.name, UserType.SUPER);
 
   return (
     <>

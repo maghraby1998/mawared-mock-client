@@ -13,3 +13,11 @@
 .form-container {
   @apply bg-white px-5 py-5 rounded-bl rounded-br;
 }
+
+.list-header-style {
+  @apply flex justify-between bg-slate-600 p-2 text-white capitalize font-bold rounded;
+}
+
+.list-row-style {
+  @apply flex justify-between p-2 capitalize rounded;
+}

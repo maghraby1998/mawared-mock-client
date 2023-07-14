@@ -14,6 +14,7 @@ import { RootState } from "./redux/store";
 import Layout from "./containers/layout/Layout";
 import Company from "./containers/super/Company";
 import Employees from "./containers/employees";
+import OfficesList from "./containers/offices/OfficesList";
 const queryClient = new QueryClient();
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<div>dashboard</div>} />
           <Route path="employees" element={<Employees />} />
+          <Route path="offices" element={<OfficesList />} />
           <Route path="*" element={<Navigate to={"/"} />} />
         </Route>
       )
