@@ -13,7 +13,7 @@ const OfficesList: React.FC = () => {
   const [officeFormData, setOfficeFormData] = useState<OfficeForm>({
     name: "",
     address: "",
-    currencyId: null,
+    currencyId: "",
   });
 
   const [filter, setFilter] = useState<string>("");

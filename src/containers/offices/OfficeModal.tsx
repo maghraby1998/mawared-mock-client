@@ -6,6 +6,7 @@ import { toggleOfficeModal } from "../../redux/slices/generalSlice";
 import TextInput from "../../inputs/TextInput";
 import { OfficeForm } from "../../enums/enums";
 import ValidateAt from "../../enums/ValidateAt";
+import DropDown from "../../inputs/Dropdown";
 
 interface Props {
   officeFormData: OfficeForm;
@@ -39,10 +40,19 @@ const OfficeModal: React.FC<Props> = ({
   const handleSubmit = (e: any) => {
     e.preventDefault();
     setIsFormSubmitted(true);
+
+    if (clientErrors.length) return;
+
+    console.log("should submit");
   };
+
+  console.log(officeFormData);
   return (
     <CustomModal isOpen={isOpen} modalTitle="add office" onClose={handleClose}>
-      <form className="form-container flex flex-col gap-7">
+      <form
+        onSubmit={handleSubmit}
+        className="form-container flex flex-col gap-7"
+      >
         <TextInput
           name="name"
           label="name"
@@ -62,6 +72,18 @@ const OfficeModal: React.FC<Props> = ({
           validateAt={ValidateAt.isString}
           {...sharedProps}
         />
+
+        <DropDown
+          label="currency"
+          options={[{ name: "egp", value: 1 }] as any}
+          name="currencyId"
+          value={officeFormData.currencyId}
+          isClearable
+          validateAt={ValidateAt.isString}
+          setState={setOfficeFormData}
+          {...sharedProps}
+        />
+        <button>submit</button>
       </form>
     </CustomModal>
   );

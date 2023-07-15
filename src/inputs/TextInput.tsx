@@ -1,6 +1,6 @@
 import React from "react";
-import useValidation from "../hooks/useValidation";
 import ValidateAt from "../enums/ValidateAt";
+import InputWithValidation from "./InputWithValidation";
 
 interface Props {
   name: string;
@@ -20,48 +20,27 @@ interface Props {
 const randomId = String(Math.random() * 999999999);
 
 const TextInput: React.FC<Props> = ({
-  validateAt,
-  isFormSubmitted = false,
-  setClientErrors = () => {},
-  label,
-  containerStyle,
-  ...inputProps
+  onChange,
+  type,
+  disabled,
+  placeholder,
+  autoFocus,
+  ...props
 }) => {
-  const { isValid, validationMessage } = useValidation({
-    name: inputProps.name,
-    value: inputProps.value,
-    validateAt,
-    isFormSubmitted,
-    setClientErrors,
-  });
-
   return (
-    <div className={containerStyle}>
-      <div>
-        {label?.length ? (
-          <label
-            className={`capitalize text-slate-500 font-semibold ${
-              !isValid && isFormSubmitted ? "text-red-400" : ""
-            }`}
-            htmlFor={randomId}
-          >
-            {label}
-          </label>
-        ) : null}
-        <input
-          id={randomId}
-          className={`border-b py-2 w-full outline-none focus:border-b-2 ${
-            !isValid && isFormSubmitted
-              ? "invalid-input-style"
-              : "border-b-slate-500"
-          }`}
-          {...inputProps}
-        />
-      </div>
-      {isFormSubmitted ? (
-        <p className="error-validation-message">{validationMessage}</p>
-      ) : null}
-    </div>
+    <InputWithValidation inputId={randomId} {...props}>
+      <input
+        id={randomId}
+        className="py-2 w-full outline-none"
+        name={props.name}
+        type={type}
+        value={props.value}
+        onChange={onChange}
+        placeholder={placeholder}
+        autoFocus={autoFocus}
+        disabled={disabled}
+      />
+    </InputWithValidation>
   );
 };
 
