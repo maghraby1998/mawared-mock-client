@@ -32,7 +32,7 @@ const InputWithValidation: React.FC<Props> = ({
     isFormSubmitted,
     setClientErrors,
   });
-  console.log(inputId);
+
   return (
     <div className={containerStyle}>
       <div>

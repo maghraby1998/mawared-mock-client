@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { useQuery } from "react-query";
 import TextInput from "../../inputs/TextInput";
-import { findAllOffices } from "../../axios/queries";
+import { findAllOffices, getAllCurrencies } from "../../axios/queries";
 import { useDispatch } from "react-redux";
 import { toggleOfficeModal } from "../../redux/slices/generalSlice";
 import OfficeModal from "./OfficeModal";
 import { OfficeForm } from "../../enums/enums";
+import { CircularProgress } from "@mui/material";
 
 const OfficesList: React.FC = () => {
   const dispatch = useDispatch();
@@ -16,28 +17,63 @@ const OfficesList: React.FC = () => {
     currencyId: "",
   });
 
+  const [clientErrors, setClientErrors] = useState<string[]>([]);
+
+  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
+
   const [filter, setFilter] = useState<string>("");
 
-  const handleInputChange = (e: any) => {
+  const handleNameFilterInputChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
     let { value } = e.target;
     setFilter(value);
   };
 
-  const { data, isLoading } = useQuery(["officesList", filter], () => {
-    return findAllOffices(filter);
+  const {
+    data,
+    isLoading: fetchOfficesListLoading,
+    refetch: refetchOfficesList,
+  } = useQuery(
+    ["officesList", filter],
+    () => {
+      return findAllOffices(filter);
+    },
+    {
+      cacheTime: 0,
+    }
+  );
+
+  const {
+    data: currenciesData,
+    isLoading: fetchCurrencyDataLoading,
+    refetch: reFetchCurrenciesData,
+  } = useQuery("getAllCurrencies", getAllCurrencies, {
+    enabled: false,
+    onSuccess: () => {
+      dispatch(toggleOfficeModal(true));
+    },
+    cacheTime: 0,
   });
 
+  const currenciesOptions = currenciesData?.data;
+
   const handleAddNew = () => {
-    dispatch(toggleOfficeModal(true));
+    console.log("refetching");
+    reFetchCurrenciesData();
   };
 
   return (
     <div className="page-container">
+      {fetchOfficesListLoading || fetchCurrencyDataLoading ? (
+        <CircularProgress className="absolute top-[50%] left-[50%]" />
+      ) : null}
+      <h2 className="page-title">offices</h2>
       <div className="flex gap-5 items-end mb-5">
         <TextInput
           name="filter"
           value={filter}
-          onChange={handleInputChange}
+          onChange={handleNameFilterInputChange}
           placeholder="Search..."
           containerStyle="w-full"
         />
@@ -66,6 +102,8 @@ const OfficesList: React.FC = () => {
       <OfficeModal
         officeFormData={officeFormData}
         setOfficeFormData={setOfficeFormData}
+        currenciesOptions={currenciesOptions}
+        refetchOfficesList={refetchOfficesList}
       />
     </div>
   );

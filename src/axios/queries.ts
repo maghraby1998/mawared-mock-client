@@ -13,5 +13,9 @@ export const findAllUsers = (name: string) => {
 };
 
 export const findAllOffices = (name: string) => {
-  return axiosClient.get(`office${name ? `?name:${name}` : ""}`);
+  return axiosClient.get(`office${name ? `?name=${name}` : ""}`);
+};
+
+export const getAllCurrencies = (name: string) => {
+  return axiosClient.get(`currency${name ? `?name:${name}` : ""}`);
 };

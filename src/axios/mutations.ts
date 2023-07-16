@@ -21,3 +21,15 @@ export const addCompany = (
 export const deleteCompany = (id: number) => {
   return axiosClient.post(`company/${id}/delete`);
 };
+
+export const upsertOffice = (
+  name: string,
+  address: string,
+  currencyId: number
+) => {
+  return axiosClient.post("/office", {
+    name,
+    address,
+    currencyId,
+  });
+};

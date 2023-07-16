@@ -2,7 +2,6 @@ import React from "react";
 import { Avatar } from "@mui/material";
 
 const getNameInitials = (name: string): string => {
-  console.log(name);
   const result: string[] = [];
   const namesArray = name.split(" ");
 

@@ -19,7 +19,9 @@ interface Props {
   isClearable?: boolean;
   options: (string | GroupBase<string>)[];
   isMulti?: boolean;
-  setState?: (callback: (arg: any) => any) => any;
+  setFormData?: (callback: (arg: any) => any) => any;
+  optionLabel?: string;
+  optionValue?: string;
 }
 
 const randomId = String(Math.random() * 999999999);
@@ -47,14 +49,16 @@ const DropDown: React.FC<Props> = ({
   isClearable,
   options,
   isMulti,
-  setState,
+  setFormData,
+  optionLabel = "name",
+  optionValue = "value",
   ...props
 }) => {
   const handleChange = (option: any) => {
-    if (!setState) return;
+    if (!setFormData) return;
 
-    setState((prev) => {
-      return { ...prev, [props.name]: option?.value };
+    setFormData((prev) => {
+      return { ...prev, [props.name]: option?.[optionValue] };
     });
   };
 
@@ -63,7 +67,9 @@ const DropDown: React.FC<Props> = ({
       <Select
         id={randomId}
         name={props.name}
-        value={options.find((option: any) => option?.value === props?.value)}
+        value={options?.find(
+          (option: any) => option?.[optionValue] === props?.value
+        )}
         onChange={onChange ? onChange : handleChange}
         placeholder={placeholder}
         autoFocus={autoFocus}
@@ -72,8 +78,8 @@ const DropDown: React.FC<Props> = ({
         options={options}
         isMulti={isMulti}
         styles={styles}
-        getOptionLabel={(option: any) => option.name}
-        getOptionValue={(option: any) => option.value}
+        getOptionLabel={(option: any) => option?.[optionLabel]}
+        getOptionValue={(option: any) => option?.[optionValue]}
       />
     </InputWithValidation>
   );

@@ -1,6 +1,6 @@
 import { useMutation } from "react-query";
 import { loginMutation } from "../../axios/mutations";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { setAuth, setToken } from "../../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +9,7 @@ import "./login.css";
 import ValidateAt from "../../enums/ValidateAt";
 import { LinearProgress } from "@mui/material";
 
-export default function Login() {
+const Login: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -123,4 +123,6 @@ export default function Login() {
       </div>
     </div>
   );
-}
+};
+
+export default Login;

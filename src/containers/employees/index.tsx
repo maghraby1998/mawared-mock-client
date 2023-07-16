@@ -25,13 +25,14 @@ const Employees: React.FC = () => {
 
   return (
     <div className="page-container">
+      <h2 className="page-title">employees</h2>
       <div className="flex items-end gap-3 mb-5">
         <TextInput
           name="employeeName"
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="search by employee"
-          label="employee name"
+          // label="name"
           containerStyle="w-full"
         />
         <button className="add-new-btn-style" onClick={handleAddNew}>

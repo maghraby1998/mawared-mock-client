@@ -21,3 +21,7 @@
 .list-row-style {
   @apply flex justify-between p-2 capitalize rounded;
 }
+
+.page-title {
+  @apply text-2xl capitalize text-slate-500 font-bold mb-5 border-b-[2px] border-b-slate-500;
+}
