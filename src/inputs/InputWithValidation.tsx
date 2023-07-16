@@ -34,7 +34,7 @@ const InputWithValidation: React.FC<Props> = ({
   });
 
   return (
-    <div className={containerStyle}>
+    <div className={`flex flex-col justify-end ${containerStyle}`}>
       <div>
         {label?.length ? (
           <label

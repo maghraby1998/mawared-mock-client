@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import EmployeeCard from "./EmployeeCard";
 import { useQuery } from "react-query";
-import { findAllUsers } from "../../axios/queries";
+import { findAllUsers, getEmployeeFormOptions } from "../../axios/queries";
 import TextInput from "../../inputs/TextInput";
 import { useDispatch } from "react-redux";
 import { toggleEmployeeModal } from "../../redux/slices/generalSlice";
@@ -19,8 +19,42 @@ const Employees: React.FC = () => {
     }
   );
 
+  const {
+    data: employeeFormOptions,
+    isLoading: fetchEmployeeFormOptionsLoading,
+    refetch: fetchEmployeeFormOptions,
+  } = useQuery("getEmployeeFormOptions", getEmployeeFormOptions, {
+    enabled: false,
+    onSuccess: (data) => {
+      console.log(data);
+      dispatch(toggleEmployeeModal(true));
+    },
+  });
+
+  const normalizeEmployeeFormOptions = () => {
+    const result: { offices: any[]; departments: any[] } = {
+      offices: [],
+      departments: [],
+    };
+
+    employeeFormOptions?.forEach((employeeFormOption, index: number) => {
+      switch (index) {
+        case 0:
+          result.offices = employeeFormOption?.data;
+          break;
+        case 1:
+          result.departments = employeeFormOption?.data;
+          break;
+        default:
+          break;
+      }
+    });
+
+    return result;
+  };
+
   const handleAddNew = () => {
-    dispatch(toggleEmployeeModal(true));
+    fetchEmployeeFormOptions();
   };
 
   return (
@@ -50,7 +84,7 @@ const Employees: React.FC = () => {
           />
         );
       })}
-      <EmployeeModal />
+      <EmployeeModal employeeFormOptions={normalizeEmployeeFormOptions()} />
     </div>
   );
 };

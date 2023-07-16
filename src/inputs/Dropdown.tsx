@@ -29,14 +29,16 @@ const randomId = String(Math.random() * 999999999);
 const styles = {
   control: (baseStyles: any) => ({
     ...baseStyles,
-    // borderColor: state.isFocused ? "yellow" : "red",
     border: "none !important",
     boxShadow: "0px !important",
   }),
-  input: (baseStyles: any) => ({ ...baseStyles }),
   indicatorSeparator: (baseStyles: any) => ({
     ...baseStyles,
     display: "none",
+  }),
+  valueContainer: (baseStyles: any) => ({
+    ...baseStyles,
+    padding: "0px !important",
   }),
 };
 
@@ -51,7 +53,7 @@ const DropDown: React.FC<Props> = ({
   isMulti,
   setFormData,
   optionLabel = "name",
-  optionValue = "value",
+  optionValue = "id",
   ...props
 }) => {
   const handleChange = (option: any) => {

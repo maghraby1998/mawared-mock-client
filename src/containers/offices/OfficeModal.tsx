@@ -106,8 +106,6 @@ const OfficeModal: React.FC<Props> = ({
           value={officeFormData.currencyId}
           isClearable
           validateAt={ValidateAt.isString}
-          optionLabel="name"
-          optionValue="id"
           {...sharedProps}
         />
         <button>{upsertOfficeLoading ? "loading..." : "submit"}</button>

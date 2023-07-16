@@ -19,3 +19,10 @@ export const findAllOffices = (name: string) => {
 export const getAllCurrencies = (name: string) => {
   return axiosClient.get(`currency${name ? `?name:${name}` : ""}`);
 };
+
+export const getEmployeeFormOptions = () => {
+  return Promise.all([
+    axiosClient.get("office/options"),
+    axiosClient.get("department/options"),
+  ]);
+};

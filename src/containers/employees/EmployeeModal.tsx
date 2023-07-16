@@ -6,33 +6,41 @@ import { toggleEmployeeModal } from "../../redux/slices/generalSlice";
 import TextInput from "../../inputs/TextInput";
 import ValidateAt from "../../enums/ValidateAt";
 import ModalSize from "../../enums/ModalSize";
+import DropDown from "../../inputs/Dropdown";
 
 interface EmployeeFormData {
   name: string;
   email: string;
   password: string;
-  officeId: number | null;
-  departmentId: number | null;
-  positionId: number | null;
-  managerId: number | null;
+  officeId: string;
+  departmentId: string;
+  positionId: string;
+  managerId: string;
 }
 
-const EmployeeModal: React.FC = () => {
+interface Props {
+  employeeFormOptions: {
+    offices: any[];
+    departments: any[];
+  };
+}
+
+const EmployeeModal: React.FC<Props> = ({ employeeFormOptions }) => {
   const [clientErrors, setClientErrors] = useState<string[]>([]);
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-  const sharedProps = { setClientErrors, isFormSubmitted };
 
   const [formData, setFormData] = useState<EmployeeFormData>({
     name: "",
     email: "",
     password: "",
-    officeId: null,
-    departmentId: null,
-    positionId: null,
-    managerId: null,
+    officeId: "",
+    departmentId: "",
+    positionId: "",
+    managerId: "",
   });
+
+  const sharedProps = { setClientErrors, isFormSubmitted, setFormData };
 
   const dispatch = useDispatch();
   const isOpen = useSelector(
@@ -50,13 +58,6 @@ const EmployeeModal: React.FC = () => {
     if (clientErrors.length) return;
   };
 
-  const handleInputChange = (e: any) => {
-    let { name, value } = e.target;
-    setFormData((prev) => {
-      return { ...prev, [name]: value };
-    });
-  };
-
   return (
     <CustomModal
       isOpen={isOpen}
@@ -64,34 +65,54 @@ const EmployeeModal: React.FC = () => {
       modalTitle="add new employee"
       modalSize={ModalSize.LARGE}
     >
-      <form className="form-container grid grid-cols-2 gap-10">
-        <TextInput
-          name="name"
-          label="name"
-          placeholder="Employee Name"
-          onChange={handleInputChange}
-          value={formData.name}
-          validateAt={ValidateAt.isString}
-          {...sharedProps}
-        />
-        <TextInput
-          name="email"
-          label="email"
-          placeholder="Email"
-          onChange={handleInputChange}
-          value={formData.email}
-          validateAt={ValidateAt.isEmail}
-          {...sharedProps}
-        />
-        <TextInput
-          name="password"
-          label="password"
-          placeholder="Password"
-          onChange={handleInputChange}
-          value={formData.password}
-          validateAt={ValidateAt.isString}
-          {...sharedProps}
-        />
+      <form onSubmit={handleSubmit} className="form-container">
+        <div className="grid grid-cols-2 gap-10 items-start">
+          <TextInput
+            name="name"
+            label="name"
+            placeholder="Employee Name"
+            value={formData.name}
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
+          <TextInput
+            name="email"
+            label="email"
+            placeholder="Email"
+            value={formData.email}
+            validateAt={ValidateAt.isEmail}
+            {...sharedProps}
+          />
+          <TextInput
+            name="password"
+            label="password"
+            placeholder="Password"
+            value={formData.password}
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
+          <DropDown
+            name="officeId"
+            value={formData.officeId}
+            options={employeeFormOptions?.offices ?? []}
+            label="Office"
+            isClearable
+            placeholder="Office"
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
+          <DropDown
+            name="departmentId"
+            value={formData.departmentId}
+            options={employeeFormOptions?.departments ?? []}
+            label="Department"
+            isClearable
+            placeholder="Department"
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
+        </div>
+        <button>submit</button>
       </form>
     </CustomModal>
   );
