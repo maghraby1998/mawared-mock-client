@@ -1,9 +1,9 @@
 .page-container {
-  @apply ml-[120px] p-5;
+  @apply ml-[100px] p-5;
 }
 
 .nav-link {
-  @apply block flex items-center justify-center h-[90px] text-white capitalize hover:bg-slate-500;
+  @apply block flex items-center justify-center h-[90px] text-white capitalize hover:bg-slate-500 text-[14px];
 }
 
 .add-new-btn-style {

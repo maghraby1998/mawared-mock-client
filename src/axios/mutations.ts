@@ -33,3 +33,16 @@ export const upsertOffice = (
     currencyId,
   });
 };
+
+export const upsertDepartment = (name: string, managerId: number) => {
+  return axiosClient.post("/department", {
+    name,
+    managerId,
+  });
+};
+
+export const upsertPosition = (name: string) => {
+  return axiosClient.post("/position", {
+    name,
+  });
+};

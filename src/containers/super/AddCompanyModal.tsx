@@ -101,7 +101,7 @@ const AddCompanyModal: React.FC<Props> = ({ isOpen, handleClose, refetch }) => {
       isOpen={isOpen}
       onClose={handleCloseModal}
     >
-      <form onSubmit={handleSubmit} className="form-container">
+      <form onSubmit={handleSubmit}>
         <div className="flex flex-col mb-3">
           <TextInput
             label="name"

@@ -22,6 +22,14 @@ const sidebarLinks: SidebarLink[] = [
     name: "offices",
     link: "/offices",
   },
+  {
+    name: "departments",
+    link: "/departments",
+  },
+  {
+    name: "positions",
+    link: "/positions",
+  },
 ];
 
 const Layout = () => {
@@ -47,7 +55,7 @@ const Layout = () => {
       </div>
 
       {authType?.name !== UserType.SUPER ? (
-        <div className="min-h-screen w-[120px] bg-slate-600 absolute">
+        <div className="h-screen w-[100px] bg-slate-600 absolute overflow-scroll top-0">
           {sidebarLinks.map((sidebarLink, index: number) => {
             return (
               <NavLink

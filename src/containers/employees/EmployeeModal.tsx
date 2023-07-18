@@ -22,6 +22,7 @@ interface Props {
   employeeFormOptions: {
     offices: any[];
     departments: any[];
+    positions: any[];
   };
 }
 
@@ -51,8 +52,7 @@ const EmployeeModal: React.FC<Props> = ({ employeeFormOptions }) => {
     dispatch(toggleEmployeeModal(false));
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     setIsFormSubmitted(true);
 
     if (clientErrors.length) return;
@@ -64,8 +64,10 @@ const EmployeeModal: React.FC<Props> = ({ employeeFormOptions }) => {
       onClose={onClose}
       modalTitle="add new employee"
       modalSize={ModalSize.LARGE}
+      saveBtnLabel="save"
+      saveBtnFunction={handleSubmit}
     >
-      <form onSubmit={handleSubmit} className="form-container">
+      <form>
         <div className="grid grid-cols-2 gap-10 items-start">
           <TextInput
             name="name"
@@ -111,8 +113,18 @@ const EmployeeModal: React.FC<Props> = ({ employeeFormOptions }) => {
             validateAt={ValidateAt.isString}
             {...sharedProps}
           />
+
+          <DropDown
+            name="positionId"
+            value={formData.positionId}
+            options={employeeFormOptions?.positions ?? []}
+            label="Position"
+            isClearable
+            placeholder="Position"
+            validateAt={ValidateAt.isString}
+            {...sharedProps}
+          />
         </div>
-        <button>submit</button>
       </form>
     </CustomModal>
   );

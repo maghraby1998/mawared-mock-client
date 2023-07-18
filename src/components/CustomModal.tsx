@@ -1,4 +1,4 @@
-import { Modal } from "@mui/material";
+import { CircularProgress, Modal } from "@mui/material";
 import React from "react";
 import ModalSize from "../enums/ModalSize";
 
@@ -8,6 +8,9 @@ interface Props {
   modalTitle: string;
   children: React.ReactNode;
   modalSize?: ModalSize;
+  saveBtnLabel?: string;
+  saveBtnFunction?: (e?: any) => void;
+  saveBtnLoading?: boolean;
 }
 
 const CustomModal: React.FC<Props> = ({
@@ -16,6 +19,9 @@ const CustomModal: React.FC<Props> = ({
   onClose,
   modalSize = ModalSize.SMALL,
   children,
+  saveBtnLabel,
+  saveBtnFunction = () => {},
+  saveBtnLoading = false,
 }) => {
   return (
     <Modal
@@ -34,7 +40,23 @@ const CustomModal: React.FC<Props> = ({
             x
           </button>
         </div>
-        {children}
+        <div className="bg-white px-5 py-5 rounded-bl rounded-br">
+          {children}
+          {/* <div className="h-[1px] w-full bg-black mt-5 mb-2 opacity-[0.5]"></div> */}
+          {saveBtnLabel ? (
+            <button
+              onClick={saveBtnFunction}
+              className="mx-auto block bg-slate-600 text-white rounded mt-5 capitalize h-[35px] min-w-[80px]"
+              disabled={saveBtnLoading}
+            >
+              {saveBtnLoading ? (
+                <CircularProgress size={16} sx={{ color: "#fff" }} />
+              ) : (
+                saveBtnLabel
+              )}
+            </button>
+          ) : null}
+        </div>
       </>
     </Modal>
   );

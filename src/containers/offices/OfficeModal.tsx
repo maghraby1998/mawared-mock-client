@@ -57,13 +57,18 @@ const OfficeModal: React.FC<Props> = ({
     (state: RootState) => state.general.isOfficeModalOpen
   );
 
-  const handleClose = () => {
-    dispatch(toggleOfficeModal(false));
+  const resetModal = () => {
     setOfficeFormData({ name: "", address: "", currencyId: "" });
+    setClientErrors([]);
+    setIsFormSubmitted(false);
   };
 
-  const handleSubmit = (e: any) => {
-    e.preventDefault();
+  const handleClose = () => {
+    dispatch(toggleOfficeModal(false));
+    resetModal();
+  };
+
+  const handleSubmit = () => {
     setIsFormSubmitted(true);
 
     if (clientErrors.length) return;
@@ -76,11 +81,15 @@ const OfficeModal: React.FC<Props> = ({
   };
 
   return (
-    <CustomModal isOpen={isOpen} modalTitle="add office" onClose={handleClose}>
-      <form
-        onSubmit={handleSubmit}
-        className="form-container flex flex-col gap-7"
-      >
+    <CustomModal
+      isOpen={isOpen}
+      modalTitle="add office"
+      onClose={handleClose}
+      saveBtnLabel="save"
+      saveBtnFunction={handleSubmit}
+      saveBtnLoading={upsertOfficeLoading}
+    >
+      <form className="flex flex-col gap-7">
         <TextInput
           name="name"
           label="name"
@@ -108,7 +117,6 @@ const OfficeModal: React.FC<Props> = ({
           validateAt={ValidateAt.isString}
           {...sharedProps}
         />
-        <button>{upsertOfficeLoading ? "loading..." : "submit"}</button>
       </form>
     </CustomModal>
   );

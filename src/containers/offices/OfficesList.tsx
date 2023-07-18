@@ -17,10 +17,6 @@ const OfficesList: React.FC = () => {
     currencyId: "",
   });
 
-  const [clientErrors, setClientErrors] = useState<string[]>([]);
-
-  const [isFormSubmitted, setIsFormSubmitted] = useState<boolean>(false);
-
   const [filter, setFilter] = useState<string>("");
 
   const handleNameFilterInputChange = (

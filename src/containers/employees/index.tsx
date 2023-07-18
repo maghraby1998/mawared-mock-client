@@ -32,9 +32,10 @@ const Employees: React.FC = () => {
   });
 
   const normalizeEmployeeFormOptions = () => {
-    const result: { offices: any[]; departments: any[] } = {
+    const result: { offices: any[]; departments: any[]; positions: any[] } = {
       offices: [],
       departments: [],
+      positions: [],
     };
 
     employeeFormOptions?.forEach((employeeFormOption, index: number) => {
@@ -44,6 +45,9 @@ const Employees: React.FC = () => {
           break;
         case 1:
           result.departments = employeeFormOption?.data;
+          break;
+        case 2:
+          result.positions = employeeFormOption?.data;
           break;
         default:
           break;

@@ -31,6 +31,7 @@ const styles = {
     ...baseStyles,
     border: "none !important",
     boxShadow: "0px !important",
+    borderRadius: "0px !important",
   }),
   indicatorSeparator: (baseStyles: any) => ({
     ...baseStyles,
