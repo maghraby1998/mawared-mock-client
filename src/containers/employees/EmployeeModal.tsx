@@ -74,6 +74,7 @@ const EmployeeModal: React.FC<Props> = ({
     onSuccess: (_) => {
       dispatch(toggleEmployeeModal(false));
       refetchEmployeesList();
+      setFormData({...formDataInitialState})
     },
   });
   // remove this
