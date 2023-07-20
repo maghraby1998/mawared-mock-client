@@ -12,12 +12,13 @@ const Employees: React.FC = () => {
 
   const [name, setName] = useState<string>("");
 
-  const { data, isLoading: findAllUsersLoading } = useQuery(
-    ["findAllUsers", name],
-    () => {
-      return findAllUsers(name);
-    }
-  );
+  const {
+    data,
+    isLoading: findAllUsersLoading,
+    refetch: refetchEmployeesList,
+  } = useQuery(["findAllUsers", name], () => {
+    return findAllUsers(name);
+  });
 
   const {
     data: employeeFormOptions,
@@ -77,18 +78,24 @@ const Employees: React.FC = () => {
           add new
         </button>
       </div>
-      {data?.data?.map((employee: any, index: number) => {
-        return (
-          <EmployeeCard
-            key={index}
-            name={employee?.name}
-            office={employee?.office?.name}
-            department={employee?.department?.name}
-            position={employee?.position?.name}
-          />
-        );
-      })}
-      <EmployeeModal employeeFormOptions={normalizeEmployeeFormOptions()} />
+      <div className="flex gap-10 flex-wrap items-center">
+        {data?.data?.map((employee: any, index: number) => {
+          return (
+            <EmployeeCard
+              key={index}
+              name={employee?.name}
+              office={employee?.office?.name}
+              department={employee?.department?.name}
+              position={employee?.position?.name}
+              imagePath={employee?.image_path}
+            />
+          );
+        })}
+      </div>
+      <EmployeeModal
+        employeeFormOptions={normalizeEmployeeFormOptions()}
+        refetchEmployeesList={refetchEmployeesList}
+      />
     </div>
   );
 };

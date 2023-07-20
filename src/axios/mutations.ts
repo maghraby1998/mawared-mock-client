@@ -46,3 +46,11 @@ export const upsertPosition = (name: string) => {
     name,
   });
 };
+
+export const createEmployee = (file: any) => {
+  return axiosClient({
+    url: "/user/create",
+    method: "post",
+    data: file,
+  });
+};

@@ -25,3 +25,9 @@
 .page-title {
   @apply text-2xl capitalize text-slate-500 font-bold mb-5 border-b-[2px] border-b-slate-500;
 }
+
+.employee-card {
+  @apply w-[350px] h-[150px] border border-slate-500 rounded flex px-2 gap-2;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+}

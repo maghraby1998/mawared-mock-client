@@ -21,6 +21,7 @@ interface Props {
   office: string;
   department: string;
   position: string;
+  imagePath: string;
 }
 
 const EmployeeCard: React.FC<Props> = ({
@@ -28,27 +29,39 @@ const EmployeeCard: React.FC<Props> = ({
   office = "office",
   department = "department",
   position = "position",
+  imagePath,
 }) => {
   const employeeInitials = getNameInitials(name);
 
   return (
-    <div className="w-[250px] h-[300px] border-2 border-slate-500 rounded flex flex-col px-3">
-      <Avatar
-        sx={{
-          bgcolor: "#333",
-          height: 80,
-          width: 80,
-          margin: 3,
-          borderBottom: "3px solid dodgerblue",
-          alignSelf: "center",
-        }}
-      >
-        {employeeInitials}
-      </Avatar>
-      <p className="capitalize">- {name}</p>
-      <p className="capitalize">- {office}</p>
-      <p className="capitalize">- {department}</p>
-      <p className="capitalize">- {position}</p>
+    <div className="employee-card">
+      <div className="h-[100px] w-[100px] overflow-hidden rounded-full bg-black self-center bg-white border border-black">
+        {imagePath ? (
+          <img
+            className="h-full w-full"
+            src={`data:image/jpeg;base64,${imagePath}`}
+            alt="Red dot"
+          />
+        ) : (
+          <Avatar
+            sx={{
+              height: "100%",
+              width: "100%",
+              bgcolor: "#333",
+              borderBottom: "3px solid dodgerblue",
+              alignSelf: "center",
+            }}
+          >
+            {employeeInitials}
+          </Avatar>
+        )}
+      </div>
+      <div className="flex flex-col justify-around">
+        <p className="capitalize">- {name}</p>
+        <p className="capitalize">- {office}</p>
+        <p className="capitalize">- {department}</p>
+        <p className="capitalize">- {position}</p>
+      </div>
     </div>
   );
 };
