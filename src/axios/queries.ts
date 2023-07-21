@@ -39,3 +39,7 @@ export const getAllManagers = () => {
 export const getCompanyPositions = (name?: string) => {
   return axiosClient.get(`/position${name ? `?name=${name}` : ""}`);
 };
+
+export const findOneUser = (id: number) => {
+  return axiosClient.get(`/user/${id}`);
+};

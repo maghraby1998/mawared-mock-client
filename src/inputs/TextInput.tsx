@@ -41,7 +41,7 @@ const TextInput: React.FC<Props> = ({
     <InputWithValidation inputId={randomId} {...props}>
       <input
         id={randomId}
-        className="py-2 w-full outline-none"
+        className="py-2 w-full outline-none rounded"
         name={props.name}
         type={type}
         value={props.value}

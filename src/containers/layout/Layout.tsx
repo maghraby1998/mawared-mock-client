@@ -44,7 +44,7 @@ const Layout = () => {
 
   return (
     <>
-      <div className="px-[50px] bg-slate-700 h-[50px] w-full flex gap-5 items-center justify-end">
+      <div className="px-[50px] bg-primary-color h-[50px] w-full flex gap-5 items-center justify-end">
         <p className="text-white capitalize">{authName}</p>
         <button
           className="text-red-500 font-bold capitalize"
@@ -55,13 +55,15 @@ const Layout = () => {
       </div>
 
       {authType?.name !== UserType.SUPER ? (
-        <div className="h-screen w-[100px] bg-slate-600 absolute overflow-scroll top-0">
+        <div className="h-screen w-[100px] bg-primary-color absolute overflow-scroll top-0 pt-[50px]">
           {sidebarLinks.map((sidebarLink, index: number) => {
             return (
               <NavLink
                 key={index}
                 className={({ isActive }) =>
-                  isActive ? "nav-link bg-slate-500" : "nav-link"
+                  isActive
+                    ? "nav-link bg-secondary-color"
+                    : "nav-link hover:bg-secondary-color/30"
                 }
                 to={sidebarLink.link}
               >

@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
 import CustomModal from "../../components/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -10,19 +10,12 @@ import DropDown from "../../inputs/Dropdown";
 import { useDropzone } from "react-dropzone";
 import { useMutation } from "react-query";
 import { createEmployee } from "../../axios/mutations";
-
-interface EmployeeFormData {
-  name: string;
-  email: string;
-  password: string;
-  officeId: string;
-  departmentId: string;
-  positionId: string;
-  managerId: string;
-  userImage: File | null;
-}
+import { EmployeeFormData } from "../../interfaces/interfaces";
 
 interface Props {
+  formData: EmployeeFormData;
+  setFormData: Dispatch<SetStateAction<EmployeeFormData>>;
+  formDataInitialState: EmployeeFormData;
   employeeFormOptions: {
     offices: any[];
     departments: any[];
@@ -34,25 +27,13 @@ interface Props {
 const EmployeeModal: React.FC<Props> = ({
   employeeFormOptions,
   refetchEmployeesList,
+  formData,
+  setFormData,
+  formDataInitialState,
 }) => {
   const [clientErrors, setClientErrors] = useState<string[]>([]);
 
   const [isFormSubmitted, setIsFormSubmitted] = useState(false);
-
-  const formDataInitialState: EmployeeFormData = {
-    name: "",
-    email: "",
-    password: "",
-    officeId: "",
-    departmentId: "",
-    positionId: "",
-    managerId: "",
-    userImage: null,
-  };
-
-  const [formData, setFormData] = useState<EmployeeFormData>({
-    ...formDataInitialState,
-  });
 
   const sharedProps = { setClientErrors, isFormSubmitted, setFormData };
 
@@ -74,11 +55,10 @@ const EmployeeModal: React.FC<Props> = ({
     onSuccess: (_) => {
       dispatch(toggleEmployeeModal(false));
       refetchEmployeesList();
-      setFormData({...formDataInitialState})
+      setFormData({ ...formDataInitialState });
     },
   });
   // remove this
-
   const handleSubmit = () => {
     setIsFormSubmitted(true);
 
@@ -86,7 +66,9 @@ const EmployeeModal: React.FC<Props> = ({
 
     const customFormData = new FormData();
 
-    customFormData.append("image", formData.userImage);
+    if (!formData.id || (formData.id && formData.userImagePath)) {
+      customFormData.append("image", formData.userImageFile);
+    }
     customFormData.append("name", formData.name);
     customFormData.append("email", formData.email);
     customFormData.append("password", formData.password);
@@ -98,12 +80,17 @@ const EmployeeModal: React.FC<Props> = ({
   };
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
-    setFormData((prev) => ({ ...prev, userImage: acceptedFiles[0] }));
+    setFormData((prev) => ({ ...prev, userImageFile: acceptedFiles[0] }));
   }, []);
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   const handleRemoveImage = () => {
-    setFormData((prev) => ({ ...prev, userImage: null }));
+    setFormData((prev) => ({
+      ...prev,
+      userImageFile: null,
+      userImagePath: null,
+    }));
   };
 
   return (
@@ -124,10 +111,14 @@ const EmployeeModal: React.FC<Props> = ({
           >
             x
           </button>
-          {formData.userImage ? (
+          {formData.userImageFile || formData.userImagePath ? (
             <img
               className="h-full"
-              src={URL.createObjectURL(formData.userImage)}
+              src={
+                formData.userImagePath
+                  ? `data:image/jpeg;base64,${formData.userImagePath}`
+                  : URL.createObjectURL(formData.userImageFile)
+              }
             />
           ) : (
             <div {...getRootProps()}>

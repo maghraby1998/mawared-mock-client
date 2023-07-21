@@ -1,13 +1,13 @@
 .page-container {
-  @apply ml-[100px] p-5;
+  @apply ml-[100px] p-5 min-h-screen;
 }
 
 .nav-link {
-  @apply block flex items-center justify-center h-[90px] text-white capitalize hover:bg-slate-500 text-[14px];
+  @apply block flex items-center justify-center h-[90px] text-white capitalize text-[14px];
 }
 
 .add-new-btn-style {
-  @apply whitespace-nowrap bg-green-700 text-white px-3 py-2 capitalize font-semibold rounded hover:bg-green-800;
+  @apply whitespace-nowrap bg-primary-color text-white px-3 py-2 capitalize font-semibold rounded hover:bg-secondary-color/80;
 }
 
 .form-container {
@@ -15,7 +15,7 @@
 }
 
 .list-header-style {
-  @apply flex justify-between bg-slate-600 p-2 text-white capitalize font-bold rounded;
+  @apply flex justify-between bg-secondary-color p-2 text-white capitalize font-bold rounded;
 }
 
 .list-row-style {
@@ -27,7 +27,27 @@
 }
 
 .employee-card {
-  @apply w-[350px] h-[150px] border border-slate-500 rounded flex px-2 gap-2;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
-    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+  @apply w-[350px] h-[150px] border border-secondary-color rounded flex px-2 py-[5px] gap-2 relative;
+  /* box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0px 4px 6px -2px; */
+}
+
+.employee-card-name {
+  width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.employee-card-divider {
+  @apply self-center bg-secondary-color w-[2px];
+  height: calc(100% - 8px);
+}
+
+.base-icon-style {
+  font-size: 20px !important;
+}
+
+.edit-icon {
+  @apply text-slate-500;
 }
