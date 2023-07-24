@@ -6,7 +6,10 @@ import { useDispatch } from "react-redux";
 import { toggleOfficeModal } from "../../redux/slices/generalSlice";
 import OfficeModal from "./OfficeModal";
 import { OfficeForm } from "../../enums/enums";
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Slide } from "@mui/material";
+import EditIcon from "@mui/icons-material/Edit";
+import DeleteForeverIcon from "@mui/icons-material/DeleteForever";
+import Swal from "sweetalert2";
 
 const OfficesList: React.FC = () => {
   const dispatch = useDispatch();
@@ -55,9 +58,26 @@ const OfficesList: React.FC = () => {
   const currenciesOptions = currenciesData?.data;
 
   const handleAddNew = () => {
-    console.log("refetching");
     reFetchCurrenciesData();
   };
+
+  const handleDeleteOffice = (id: number) => {
+    Swal.fire({
+      icon: "warning",
+      title: "Warning!",
+      text: "This action can't be reverted.",
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+      confirmButtonColor: "#d9534f",
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        Swal.fire("Saved!", "", "success");
+      }
+    });
+  };
+
+  const handleEditOffice = (id: number) => {};
 
   return (
     <div className="page-container">
@@ -73,9 +93,11 @@ const OfficesList: React.FC = () => {
           placeholder="Search..."
           containerStyle="w-full"
         />
-        <button className="add-new-btn-style" onClick={handleAddNew}>
-          add new
-        </button>
+        <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+          <button className="add-new-btn-style" onClick={handleAddNew}>
+            add new
+          </button>
+        </Slide>
       </div>
       <div className="list-header-style">
         <p className="flex-1">name</p>
@@ -84,14 +106,36 @@ const OfficesList: React.FC = () => {
         <p className="flex-1">actions</p>
       </div>
 
-      {data?.data.map((office: any) => {
+      {data?.data.map((office: any, index: number) => {
         return (
-          <div className="list-row-style">
-            <p className="flex-1">{office?.name}</p>
-            <p className="flex-1">{office?.address}</p>
-            <p className="flex-1">{office?.currency?.name}</p>
-            <p className="flex-1">actions</p>
-          </div>
+          <Slide
+            direction="up"
+            in={true}
+            mountOnEnter
+            unmountOnExit
+            timeout={(index + 1) * 100}
+          >
+            <div className="list-row-style">
+              <p className="flex-1">{office?.name}</p>
+              <p className="flex-1">{office?.address}</p>
+              <p className="flex-1">{office?.currency?.name}</p>
+              <div className="flex-1 flex gap-4">
+                <button
+                  onClick={() => handleDeleteOffice(office?.id)}
+                  title="edit"
+                >
+                  <DeleteForeverIcon className="base-icon-style edit-icon text-red-500" />
+                </button>
+
+                <button
+                  onClick={() => handleEditOffice(office?.id)}
+                  title="delete"
+                >
+                  <EditIcon className="base-icon-style edit-icon text-green-500" />
+                </button>
+              </div>
+            </div>
+          </Slide>
         );
       })}
 

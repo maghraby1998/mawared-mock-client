@@ -1,6 +1,7 @@
 enum ModalSize {
-  SMALL = "800",
-  LARGE = "1200",
+  SMALL = "small-custom-modal-size",
+  LARGE = "large-custom-modal-size",
+  POPUP = "popup-custom-modal-size",
 }
 
 export default ModalSize;

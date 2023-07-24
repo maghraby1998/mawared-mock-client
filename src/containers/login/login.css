@@ -3,5 +3,5 @@
 }
 
 .error-validation-message {
-  @apply text-red-500 capitalize;
+  @apply text-red-500 capitalize text-[15px];
 }

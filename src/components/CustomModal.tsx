@@ -11,6 +11,7 @@ interface Props {
   saveBtnLabel?: string;
   saveBtnFunction?: (e?: any) => void;
   saveBtnLoading?: boolean;
+  saveBtnStyle?: string;
 }
 
 const CustomModal: React.FC<Props> = ({
@@ -22,21 +23,24 @@ const CustomModal: React.FC<Props> = ({
   saveBtnLabel,
   saveBtnFunction = () => {},
   saveBtnLoading = false,
+  saveBtnStyle = "bg-secondary-color",
 }) => {
   return (
     <Modal
       open={isOpen}
-      className={`${
-        modalSize === ModalSize.SMALL ? "w-[800px]" : "w-[1200px]"
-      } mx-auto my-[30px] rounded overflow-scroll flex flex-col itmes-start justify-start`}
+      className={`${modalSize} custom-modal-style`}
       disableEscapeKeyDown
-      slotProps={{ backdrop: { onClick: () => {} } }}
+      slotProps={{
+        backdrop: {
+          onClick: () => {},
+        },
+      }}
     >
-      <>
-        <div className="h-[50px] bg-slate-300 w-full capitalize flex justify-between items-center">
+      <div className="rounded">
+        <div className="h-[40px] bg-primary-color w-full capitalize flex justify-between items-center text-white font-bold">
           <p className="px-5">{modalTitle}</p>
           <button
-            className="bg-red-500 text-white text-xl font-bold h-full w-[50px]"
+            className="bg-red-600 text-white text-xl font-bold h-full w-[50px]"
             onClick={onClose}
           >
             x
@@ -48,7 +52,7 @@ const CustomModal: React.FC<Props> = ({
           {saveBtnLabel ? (
             <button
               onClick={saveBtnFunction}
-              className="mx-auto block bg-slate-600 text-white rounded mt-5 capitalize h-[35px] min-w-[80px]"
+              className={`mx-auto block text-white rounded mt-5 capitalize h-[35px] min-w-[80px] mt-20 ${saveBtnStyle}`}
               disabled={saveBtnLoading}
             >
               {saveBtnLoading ? (
@@ -59,7 +63,7 @@ const CustomModal: React.FC<Props> = ({
             </button>
           ) : null}
         </div>
-      </>
+      </div>
     </Modal>
   );
 };

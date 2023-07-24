@@ -1,10 +1,16 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 
+type DeleteEmployeeAction = {
+  isOpen: boolean;
+  employeeId: number | null;
+};
+
 interface InitialState {
   isEmployeeModalOpen: boolean;
   isOfficeModalOpen: boolean;
   isDepartmentsModalOpen: boolean;
   isPositionsModalOpen: boolean;
+  deleteEmployeeModal: DeleteEmployeeAction;
 }
 
 const initialState: InitialState = {
@@ -12,6 +18,10 @@ const initialState: InitialState = {
   isOfficeModalOpen: false,
   isDepartmentsModalOpen: false,
   isPositionsModalOpen: false,
+  deleteEmployeeModal: {
+    isOpen: false,
+    employeeId: null,
+  },
 };
 
 const generalSlice = createSlice({
@@ -33,6 +43,13 @@ const generalSlice = createSlice({
     togglePositionModal: (state, action: PayloadAction<boolean>) => {
       state.isPositionsModalOpen = action.payload;
     },
+
+    toggleDeleteEmployeeModal: (
+      state,
+      action: PayloadAction<DeleteEmployeeAction>
+    ) => {
+      state.deleteEmployeeModal = action.payload;
+    },
   },
 });
 
@@ -41,6 +58,7 @@ export const {
   toggleOfficeModal,
   toggleDepartmentModal,
   togglePositionModal,
+  toggleDeleteEmployeeModal,
 } = generalSlice.actions;
 
 export default generalSlice.reducer;

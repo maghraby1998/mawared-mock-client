@@ -54,3 +54,7 @@ export const createEmployee = (file: any) => {
     data: file,
   });
 };
+
+export const deleteUser = (id: number) => {
+  return axiosClient.delete(`/user/${id}`);
+};

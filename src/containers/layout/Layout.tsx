@@ -44,7 +44,7 @@ const Layout = () => {
 
   return (
     <>
-      <div className="px-[50px] bg-primary-color h-[50px] w-full flex gap-5 items-center justify-end">
+      <div className="px-5 bg-primary-color h-[50px] w-full flex gap-5 items-center justify-end">
         <p className="text-white capitalize">{authName}</p>
         <button
           className="text-red-500 font-bold capitalize"

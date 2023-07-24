@@ -1,4 +1,4 @@
-import { CircularProgress } from "@mui/material";
+import { CircularProgress, Slide } from "@mui/material";
 import React, { useState } from "react";
 import TextInput from "../../inputs/TextInput";
 import { useQuery } from "react-query";
@@ -62,9 +62,11 @@ const DepartmentsList: React.FC = () => {
           placeholder="Search..."
           containerStyle="w-full"
         />
-        <button className="add-new-btn-style" onClick={handleAddNew}>
-          add new
-        </button>
+        <Slide direction="left" in={true} mountOnEnter unmountOnExit>
+          <button className="add-new-btn-style" onClick={handleAddNew}>
+            add new
+          </button>
+        </Slide>
       </div>
 
       <div className="list-header-style">
@@ -73,13 +75,21 @@ const DepartmentsList: React.FC = () => {
         <p className="flex-1">actions</p>
       </div>
 
-      {companyDepartments.map((department: any) => {
+      {companyDepartments.map((department: any, index: number) => {
         return (
-          <div className="list-row-style">
-            <p className="flex-1">{department?.name}</p>
-            <p className="flex-1">{department?.manager?.name}</p>
-            <p className="flex-1">actions</p>
-          </div>
+          <Slide
+            direction="up"
+            in={true}
+            mountOnEnter
+            unmountOnExit
+            timeout={(index + 1) * 100}
+          >
+            <div className="list-row-style">
+              <p className="flex-1">{department?.name}</p>
+              <p className="flex-1">{department?.manager?.name}</p>
+              <p className="flex-1">actions</p>
+            </div>
+          </Slide>
         );
       })}
 

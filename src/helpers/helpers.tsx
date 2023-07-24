@@ -12,3 +12,20 @@ export const getNameInitials = (name: string): string => {
   });
   return result.join(".");
 };
+
+export const getRandomString = (length: number) => {
+  const characters =
+    "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+  const characterArr = characters.split("");
+
+  let result = "";
+
+  for (let i = 0; i < length; i++) {
+    let randomChar =
+      characterArr[Math.floor(Math.random() * characterArr.length)];
+    result += randomChar;
+  }
+
+  return result;
+};

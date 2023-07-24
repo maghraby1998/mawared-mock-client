@@ -1,4 +1,10 @@
-import React, { Dispatch, SetStateAction, useCallback, useState } from "react";
+import React, {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import CustomModal from "../../components/CustomModal";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../redux/store";
@@ -22,6 +28,7 @@ interface Props {
     positions: any[];
   };
   refetchEmployeesList: () => void;
+  setEmployeeId: React.Dispatch<React.SetStateAction<number | null>>;
 }
 
 const EmployeeModal: React.FC<Props> = ({
@@ -30,6 +37,7 @@ const EmployeeModal: React.FC<Props> = ({
   formData,
   setFormData,
   formDataInitialState,
+  setEmployeeId,
 }) => {
   const [clientErrors, setClientErrors] = useState<string[]>([]);
 
@@ -42,20 +50,27 @@ const EmployeeModal: React.FC<Props> = ({
     (state: RootState) => state.general.isEmployeeModalOpen
   );
 
+  const resetModal = () => {
+    setFormData({ ...formDataInitialState });
+    setIsFormSubmitted(false);
+    setClientErrors([]);
+    setEmployeeId(null);
+  };
+
   const onClose = () => {
     dispatch(toggleEmployeeModal(false));
-    setFormData({ ...formDataInitialState });
+    resetModal();
   };
 
   // remove this
-  const { mutate } = useMutation({
+  const { mutate: createUserFunc } = useMutation({
     mutationFn: ({ file }: any) => {
       return createEmployee(file);
     },
     onSuccess: (_) => {
       dispatch(toggleEmployeeModal(false));
       refetchEmployeesList();
-      setFormData({ ...formDataInitialState });
+      resetModal();
     },
   });
   // remove this
@@ -66,17 +81,28 @@ const EmployeeModal: React.FC<Props> = ({
 
     const customFormData = new FormData();
 
-    if (!formData.id || (formData.id && formData.userImagePath)) {
+    if (formData.id) {
+      customFormData.append("id", formData.id);
+      if (formData.userImagePath) {
+        customFormData.append("image", undefined);
+      } else {
+        if (formData.userImageFile) {
+          customFormData.append("image", formData.userImageFile);
+        } else {
+          customFormData.append("removeImage", true);
+        }
+      }
+    } else {
       customFormData.append("image", formData.userImageFile);
     }
+
     customFormData.append("name", formData.name);
     customFormData.append("email", formData.email);
-    customFormData.append("password", formData.password);
     customFormData.append("officeId", formData.officeId);
     customFormData.append("departmentId", formData.departmentId);
     customFormData.append("positionId", formData.positionId);
 
-    mutate({ file: customFormData });
+    createUserFunc({ file: customFormData });
   };
 
   const onDrop = useCallback((acceptedFiles: any[]) => {
@@ -97,7 +123,7 @@ const EmployeeModal: React.FC<Props> = ({
     <CustomModal
       isOpen={isOpen}
       onClose={onClose}
-      modalTitle="add new employee"
+      modalTitle={formData.id ? "edit employee" : "add new employee"}
       modalSize={ModalSize.LARGE}
       saveBtnLabel="save"
       saveBtnFunction={handleSubmit}
@@ -144,14 +170,6 @@ const EmployeeModal: React.FC<Props> = ({
             placeholder="Email"
             value={formData.email}
             validateAt={ValidateAt.isEmail}
-            {...sharedProps}
-          />
-          <TextInput
-            name="password"
-            label="password"
-            placeholder="Password"
-            value={formData.password}
-            validateAt={ValidateAt.isString}
             {...sharedProps}
           />
           <DropDown

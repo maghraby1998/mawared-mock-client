@@ -1,5 +1,5 @@
 .page-container {
-  @apply ml-[100px] p-5 min-h-screen;
+  @apply ml-[100px] p-5;
 }
 
 .nav-link {
@@ -15,11 +15,11 @@
 }
 
 .list-header-style {
-  @apply flex justify-between bg-secondary-color p-2 text-white capitalize font-bold rounded;
+  @apply flex justify-between bg-secondary-color px-3 py-4 text-white capitalize font-bold rounded mb-2;
 }
 
 .list-row-style {
-  @apply flex justify-between p-2 capitalize rounded;
+  @apply flex justify-between px-3 py-2 capitalize rounded bg-[#C5DFF8]/80 my-2;
 }
 
 .page-title {
@@ -27,7 +27,7 @@
 }
 
 .employee-card {
-  @apply w-[350px] h-[150px] border border-secondary-color rounded flex px-2 py-[5px] gap-2 relative;
+  @apply h-[150px] border border-secondary-color rounded flex px-2 py-[5px] gap-2 relative;
   /* box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px; */
 }
@@ -50,4 +50,25 @@
 
 .edit-icon {
   @apply text-slate-500;
+}
+
+.custom-modal-style {
+  @apply mx-auto rounded overflow-scroll;
+  margin-top: calc(100vh * 0.2);
+}
+
+.popup-custom-modal-size {
+  width: 400px;
+}
+
+.small-custom-modal-size {
+  width: 800px;
+}
+
+.large-custom-modal-size {
+  width: 1200px;
+}
+
+.warning-color {
+  color: red !important;
 }
