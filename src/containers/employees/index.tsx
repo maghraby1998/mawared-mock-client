@@ -14,7 +14,7 @@ import {
 } from "../../redux/slices/generalSlice";
 import EmployeeModal from "./EmployeeModal";
 import { EmployeeFormData } from "../../interfaces/interfaces";
-import { Box, Grow, Skeleton, Slide } from "@mui/material";
+import { Box, Fade, Grow, Skeleton, Slide } from "@mui/material";
 import { RootState } from "../../redux/store";
 import { deleteUser } from "../../axios/mutations";
 import DeleteEmployeeModal from "./DeleteEmployeeModal";
@@ -144,13 +144,17 @@ const Employees: React.FC = () => {
     <div className="page-container">
       <h2 className="page-title">employees</h2>
       <div className="flex items-end gap-3 mb-5">
-        <TextInput
-          name="employeeName"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Search By Employee"
-          containerStyle="w-full"
-        />
+        <Grow in={true} timeout={300}>
+          <div className="w-full">
+            <TextInput
+              name="employeeName"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Search By Employee"
+              containerStyle="w-full"
+            />
+          </div>
+        </Grow>
         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
           <button className="add-new-btn-style" onClick={handleAddNew}>
             add new

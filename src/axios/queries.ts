@@ -43,3 +43,10 @@ export const getCompanyPositions = (name?: string) => {
 export const findOneUser = (id: number) => {
   return axiosClient.get(`/user/${id}`);
 };
+
+export const editOffice = (id: number) => {
+  return Promise.all([
+    axiosClient.get("/currency"),
+    axiosClient.get(`/office/${id}`),
+  ]);
+};

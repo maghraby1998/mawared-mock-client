@@ -82,7 +82,7 @@ const EmployeeModal: React.FC<Props> = ({
     const customFormData = new FormData();
 
     if (formData.id) {
-      customFormData.append("id", formData.id);
+      customFormData.append("id", formData.id.toString());
       if (formData.userImagePath) {
         customFormData.append("image", undefined);
       } else {

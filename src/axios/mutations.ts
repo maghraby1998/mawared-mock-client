@@ -23,11 +23,13 @@ export const deleteCompany = (id: number) => {
 };
 
 export const upsertOffice = (
+  id: string | undefined,
   name: string,
   address: string,
   currencyId: number
 ) => {
   return axiosClient.post("/office", {
+    id,
     name,
     address,
     currencyId,
@@ -57,4 +59,8 @@ export const createEmployee = (file: any) => {
 
 export const deleteUser = (id: number) => {
   return axiosClient.delete(`/user/${id}`);
+};
+
+export const deleteOffice = (id: number) => {
+  return axiosClient.delete(`/office/${id}`);
 };

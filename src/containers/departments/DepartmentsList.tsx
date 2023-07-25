@@ -1,4 +1,4 @@
-import { CircularProgress, Slide } from "@mui/material";
+import { CircularProgress, Grow, Slide } from "@mui/material";
 import React, { useState } from "react";
 import TextInput from "../../inputs/TextInput";
 import { useQuery } from "react-query";
@@ -55,13 +55,17 @@ const DepartmentsList: React.FC = () => {
       <h2 className="page-title">departments</h2>
 
       <div className="flex gap-5 items-end mb-5">
-        <TextInput
-          name="filter"
-          value={filter}
-          onChange={handleNameFilterInputChange}
-          placeholder="Search..."
-          containerStyle="w-full"
-        />
+        <Grow in={true} timeout={300}>
+          <div className="w-full">
+            <TextInput
+              name="filter"
+              value={filter}
+              onChange={handleNameFilterInputChange}
+              placeholder="Search..."
+              containerStyle="w-full"
+            />
+          </div>
+        </Grow>
         <Slide direction="left" in={true} mountOnEnter unmountOnExit>
           <button className="add-new-btn-style" onClick={handleAddNew}>
             add new

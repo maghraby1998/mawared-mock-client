@@ -13,6 +13,7 @@ import { upsertOffice } from "../../axios/mutations";
 interface Props {
   officeFormData: OfficeForm;
   setOfficeFormData: React.Dispatch<React.SetStateAction<OfficeForm>>;
+  setOfficeId: React.Dispatch<React.SetStateAction<number | null>>;
   currenciesOptions: any[] | unknown;
   refetchOfficesList: () => any;
 }
@@ -22,6 +23,7 @@ const OfficeModal: React.FC<Props> = ({
   setOfficeFormData,
   currenciesOptions,
   refetchOfficesList,
+  setOfficeId,
 }) => {
   const dispatch = useDispatch();
 
@@ -37,17 +39,19 @@ const OfficeModal: React.FC<Props> = ({
   const { isLoading: upsertOfficeLoading, mutate: upsertOfficeFunc } =
     useMutation({
       mutationFn: ({
+        id,
         name,
         address,
         currencyId,
       }: {
+        id?: string;
         name: string;
         address: string;
         currencyId: number;
       }) => {
-        return upsertOffice(name, address, currencyId);
+        return upsertOffice(id, name, address, currencyId);
       },
-      onSuccess: (data) => {
+      onSuccess: (_) => {
         refetchOfficesList();
         handleClose();
       },
@@ -61,6 +65,7 @@ const OfficeModal: React.FC<Props> = ({
     setOfficeFormData({ name: "", address: "", currencyId: "" });
     setClientErrors([]);
     setIsFormSubmitted(false);
+    setOfficeId(null);
   };
 
   const handleClose = () => {
@@ -74,6 +79,7 @@ const OfficeModal: React.FC<Props> = ({
     if (clientErrors.length) return;
 
     upsertOfficeFunc({
+      id: officeFormData.id,
       name: officeFormData.name,
       address: officeFormData.address,
       currencyId: +officeFormData.currencyId,
